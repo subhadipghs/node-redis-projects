@@ -1,0 +1,15 @@
+{
+  "description": "Hello redis program",
+  "author": {
+    "name": "Subhadip Ghosh"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "redis": "^4.0.4",
+    "tap": "^16.0.0"
+  },
+  "scripts": {
+    "test": "tap tests/**/*.js",
+    "start": "node index.js"
+  }
+}
