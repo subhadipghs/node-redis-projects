@@ -99,6 +99,17 @@ async function set() {
   for (let e = 0; e < e.length; e++) {
     assert.ok(noDups.has(elems[e]))
   }
+
+  // remove one element and check the cardinality
+  const rm = await client.sRem(k, 33)
+  assert.equal(rm, 1)
+  const [cardn2, mem2] = await Promise.all([
+    client.sCard(k),
+    client.sMembers(k)
+  ])
+  assert.equal(cardn2, noDups.size - 1)
+  assert.equal(new Set(mem2).has(33), false)
+  await client.flushAll()
   console.log('OK:', set.name)
 }
 
