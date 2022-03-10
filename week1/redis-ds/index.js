@@ -57,6 +57,13 @@ async function lists() {
   const popped = await client.rPop(k)
   assert.equal(popped, 'five') 
 
+  // remove known duplicates
+  const removed = await client.lRem(k, 1, 'three')
+  // removed 1 
+  assert.equal(removed, 1)
+  const lengthAfterRemoving = await client.lLen(k)
+  assert.equal(lengthAfterRemoving, 4)
+
   console.log('OK:', lists.name)
   await client.flushAll()
 }
