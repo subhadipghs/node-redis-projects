@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "hello-world:test": "tap week1/hello-redis/tests/**/*.js",
-    "redis-ds:test": "tap week1/redis-ds/index.js"
+    "redis-ds:start": "node week1/redis-ds/index.js"
   },
   "repository": {
     "type": "git",
