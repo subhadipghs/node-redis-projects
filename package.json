@@ -1,0 +1,25 @@
+{
+  "name": "redis-projects",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "hello-world:test": "tap week1/hello-redis/tests/**/*.js",
+    "redis-ds:test": "tap week1/redis-ds/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/subhadipghs/node-redis-projects.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/subhadipghs/node-redis-projects/issues"
+  },
+  "homepage": "https://github.com/subhadipghs/node-redis-projects#readme",
+  "dependencies": {
+    "redis": "^4.0.4",
+    "tap": "^16.0.0"
+  }
+}
