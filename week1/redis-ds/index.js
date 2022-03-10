@@ -81,10 +81,31 @@ async function float() {
   await client.flushAll()
 }
 
+async function set() {
+  let k = 'numbers'
+  let nums = [1, 2, 33, 2, 4, 4, 34]
+  const noDups = new Set(nums)
+  // add elements
+  const l = await client.sAdd(k, nums)
+  // check the cardinality
+  assert.equal(l, noDups.size)
+  const cardn = await client.sCard(k)
+  assert.equal(cardn, noDups.size)
+
+  // get the elements
+  const elems = await client.sMembers(k)
+  // check whether all the elements resides in the set
+  console.dir(elems)
+  for (let e = 0; e < e.length; e++) {
+    assert.ok(noDups.has(elems[e]))
+  }
+  console.log('OK:', set.name)
+}
+
 
 function main() {
   setup().then(() => {
-    lists().then(() => {
+    set().then(() => {
       client.quit() 
     }) // for list data structure
   })
