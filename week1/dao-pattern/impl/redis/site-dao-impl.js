@@ -15,7 +15,10 @@ function getSiteIdsKey() {
 }
 
 function buildSiteDaoImpl({ client, Id } = { Id }) {
-   return {
+  return {
+    /**
+     * Insert a site information inside redis hash
+     */
     insert: async (r) => {
       const nId = Id.makeId();
       const key = getSiteKey({ id: nId });
@@ -28,9 +31,20 @@ function buildSiteDaoImpl({ client, Id } = { Id }) {
       ]);
       return {
         ok: true,
-        key,
+        id: nId,
       };
     },
+    /**
+     * Find a site information by the site id
+     */
+    findById: async (id) => {
+      const key = getSiteKey({ id })
+      const rep = await client.hGetAll(key)
+      if (Object.keys(rep).length <= 0) {
+        return null
+      } 
+      return rep
+    }
   };
 }
    // Make the hash key for storing the site information
