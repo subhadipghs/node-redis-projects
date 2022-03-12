@@ -4,10 +4,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "test": "tap",
     "hello-world:test": "tap week1/hello-redis/tests/**/*.js",
     "redis-ds:start": "node week1/redis-ds/index.js",
     "dao-pattern:start": "node week1/dao-pattern/index.js",
-    "dao-pattern:test": "tap week1/dao-pattern/tests/**/*.js"
+    "dao-pattern:test": "tap week1/dao-pattern/tests/**/*.js",
+    "lua-script:test": "tap week2/tests/**/*.js"
   },
   "repository": {
     "type": "git",
