@@ -9,7 +9,9 @@
     "redis-ds:start": "node week1/redis-ds/index.js",
     "dao-pattern:start": "node week1/dao-pattern/index.js",
     "dao-pattern:test": "tap week1/dao-pattern/tests/**/*.js",
-    "lua-script:test": "tap week2/tests/**/*.js"
+    "lua-script:test": "tap week2/lua-scripting/tests/**/*.js",
+    "pipelining:start": "node week2/pipelining/index.js",
+    "pipelining:test": "tap week2/pipelining/tests/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -23,10 +25,12 @@
   },
   "homepage": "https://github.com/subhadipghs/node-redis-projects#readme",
   "dependencies": {
+    "bluebird": "^3.7.2",
     "cuid": "^2.1.8",
     "express": "^4.17.3",
     "morgan": "^1.10.0",
     "redis": "^4.0.4",
+    "redis2": "npm:redis@^2.8.0",
     "sinon": "^13.0.1",
     "tap": "^16.0.0"
   }
