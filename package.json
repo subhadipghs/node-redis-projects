@@ -11,7 +11,8 @@
     "dao-pattern:test": "tap week1/dao-pattern/tests/**/*.js",
     "lua-script:test": "tap week2/lua-scripting/tests/**/*.js",
     "pipelining:start": "node week2/pipelining/index.js",
-    "pipelining:test": "tap week2/pipelining/tests/**/*.js"
+    "pipelining:test": "tap week2/pipelining/tests/**/*.js",
+    "tx:test": "tap week2/transactions/tests/**/*.js"
   },
   "repository": {
     "type": "git",
