@@ -150,9 +150,63 @@ async function sortedSet() {
   const max = await client.zPopMax(key);
   console.log("max", max);
 }
+
+
+async function scanning() {
+  // key scanning
+  for (let i = 0; i < 30; i++) {
+    await client.set(`key:${i}`, i);
+  } 
+  let cur = 0;
+  console.log('key scanning');
+  do {
+    const { cursor, keys } = await client.scan(cur);
+    cur = cursor;
+    console.log({ cursor, keys });
+  } while(cur != 0);
+
+  // hash scanning
+  const hk = 'hash-scan-key'
+  await client.hSet(hk, {
+    name: 'test',
+    age: 10,
+    isVerified: true,
+    email: 'test@gmail.com',
+  })
+  console.log('hash scanning');
+  for await (let { field, value } of client.hScanIterator(hk, {
+    COUNT: 2,
+  })) {
+    console.dir({ field, value });
+  }
+
+  // set scanning
+  const sk = 'set-key';
+  const elems = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+  for (let e of elems) {
+    await client.sAdd(sk, e);
+  }
+  console.log('set scanning');
+  for await (let member of client.sScanIterator(sk)) {
+    console.log(member) 
+  }
+  // sorted set scanning
+  const ssk = 'sorted-set-scanning';
+  await client.zAdd(ssk, [
+    { score: 10, value: 'ten' },
+    { score: 1, value: 'one' },
+    { score: 2, value: 'two' },
+    { score: 5, value: 'five' },
+  ])
+
+  console.log('sorted set scanning');
+  for await (let { score, value } of client.zScanIterator(ssk, { COUNT: 2 })) {
+    console.dir({ score, value });
+  }
+}
 function main() {
   setup().then(() => {
-    sortedSet().then(() => {
+    scanning().then(() => {
       client.quit();
     }); // for list data structure
   });
