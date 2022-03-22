@@ -1,28 +1,35 @@
+"use strict";
+
 const { getClient, connect, quit } = require("./redis");
 
 const gk = "cities:geo";
 const geoPoints = [
   {
+    id: 1,
     city: "kolkata",
     latitude: 22.572645,
     longitude: 88.363892,
   },
   {
+    id: 2,
     city: "burdwan",
     latitude: 23.2491,
     longitude: 87.8694,
   },
   {
+    id: 3,
     city: "kharagpur",
     latitude: 22.3,
     longitude: 87.2,
   },
   {
+    id: 4,
     city: "borahnagar",
     latitude: 27.732389,
     longitude: 78.753967,
   },
   {
+    id: 5,
     city: "nabadwip",
     latitude: 23.399191,
     longitude: 88.363518,
@@ -32,20 +39,21 @@ const geoPoints = [
 async function addGeoPoints() {
   const client = getClient();
   await connect();
-  const replies = [];
   for (let geo of geoPoints) {
-    const rep = await client.geoAdd(
+    await client.geoAdd(
       gk,
       {
-        member: geo.city,
+        member: geo.id,
         latitude: geo.latitude,
         longitude: geo.longitude,
       },
       { NX: true }
     );
-    replies.push(rep);
+    await client.zAdd("cities", {
+      score: geo.id,
+      value: geo.city,
+    });
   }
-  console.dir(replies);
 }
 
 async function findGeoPoints() {
@@ -66,12 +74,32 @@ async function findGeoPoints() {
   ]);
   console.log(placesWithin100KM);
 }
-addGeoPoints()
-  .then(() => {
-    findGeoPoints()
-      .then(() => {
-        quit();
-      })
-      .catch(() => quit());
-  })
-  .catch(() => quit());
+
+async function geoStoreInZset() {
+  const client = getClient();
+  await client.sendCommand([
+    "GEORADIUS",
+    gk,
+    geoPoints[0].longitude,
+    geoPoints[0].latitude,
+    100,
+    "km",
+    "STORE",
+    "intrm:100:km",
+  ]);
+  // get the sorted set where the results from georadius query is stored
+  const citiesIn100km = await client.zRange("intrm:100:km", 0, -1);
+  console.log("cities within 100km", citiesIn100km);
+  // retrieve the cities that are not within the 100km
+  // we perform set difference of cities and cities-within-100 sets
+  const citiesNotIn100km = await client.zDiff(['cities', 'intrm:100:km'])
+  console.log("cities within 100km", citiesNotIn100km);
+}
+
+const main = async () => {
+  await addGeoPoints();
+  await geoStoreInZset();
+  await getClient().quit();
+};
+
+main();
