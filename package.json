@@ -13,7 +13,8 @@
     "pipelining:start": "node week2/pipelining/index.js",
     "pipelining:test": "tap week2/pipelining/tests/**/*.js",
     "tx:test": "tap week2/transactions/tests/**/*.js",
-    "geo:start": "node week3/geo/index.js"
+    "geo:start": "node week3/geo/index.js",
+    "stream:test": "tap week3/streams/index.js"
   },
   "repository": {
     "type": "git",
